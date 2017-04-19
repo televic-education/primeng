@@ -153,6 +153,7 @@ export class DomHandler {
         dimensions.height = element.offsetHeight;
         element.style.display = 'none';
         element.style.visibility = 'visible';
+
         return dimensions;
     }
 
