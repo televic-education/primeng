@@ -98,7 +98,7 @@ export class DomHandler {
     public absolutePosition(element: any, target: any): void {
         let elementDimensions = element.offsetParent ? { width: element.offsetWidth, height: element.offsetHeight } : this.getHiddenElementDimensions(element);
         let top, left;
-        if (this.position === Position.LEFT) {
+        if (this.position !== Position.RIGHT) {
             let elementOuterHeight = elementDimensions.height;
             let elementOuterWidth = elementDimensions.width;
             let targetOuterHeight = target.offsetHeight;
