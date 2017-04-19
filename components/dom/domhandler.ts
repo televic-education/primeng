@@ -147,16 +147,14 @@ export class DomHandler {
 
     public getHiddenElementDimensions(element: any): any {
         let dimensions: any = {};
+        element.style.top = '0px';
+        element.style.left = '0px';
         element.style.visibility = 'hidden';
         element.style.display = 'block';
         dimensions.width = element.offsetWidth;
         dimensions.height = element.offsetHeight;
         element.style.display = 'none';
         element.style.visibility = 'visible';
-        /*if (this.position === Position.RIGHT) {
-            element.style.top = '0px';
-            element.style.left = '0px';
-        }*/
         return dimensions;
     }
 
