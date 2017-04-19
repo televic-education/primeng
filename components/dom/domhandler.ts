@@ -10,8 +10,6 @@ export class DomHandler {
 
     public static zindex: number = 1000;
 
-    public position: string;
-
     public addClass(element: any, className: string): void {
         if (element.classList)
             element.classList.add(className);
@@ -95,10 +93,10 @@ export class DomHandler {
         element.style.left = left + 'px';
     }
 
-    public absolutePosition(element: any, target: any): void {
+    public absolutePosition(element: any, target: any, position: string = Position.LEFT): void {
         let elementDimensions = element.offsetParent ? { width: element.offsetWidth, height: element.offsetHeight } : this.getHiddenElementDimensions(element);
         let top, left;
-        if (this.position !== Position.RIGHT) {
+        if (position === Position.LEFT) {
             let elementOuterHeight = elementDimensions.height;
             let elementOuterWidth = elementDimensions.width;
             let targetOuterHeight = target.offsetHeight;

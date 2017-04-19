@@ -29,10 +29,7 @@ export class OverlayPanel implements OnInit,AfterViewInit,OnDestroy {
     
     @Input() appendTo: any;
 
-    @Input('position')
-    set position(value: string) {
-        this.domHandler.position = value;
-    }
+    @Input() position: string;
 
     @Output() onBeforeShow: EventEmitter<any> = new EventEmitter();
 
@@ -108,11 +105,11 @@ export class OverlayPanel implements OnInit,AfterViewInit,OnDestroy {
         this.container.style.zIndex = ++DomHandler.zindex;
 
         if(this.visible) {
-            this.domHandler.absolutePosition(this.container, elementTarget);
+            this.domHandler.absolutePosition(this.container, elementTarget, this.position);
         }
         else {
             this.visible = true;
-            this.domHandler.absolutePosition(this.container, elementTarget);
+            this.domHandler.absolutePosition(this.container, elementTarget, this.position);
             this.domHandler.fadeIn(this.container, 250);
         }
         this.onAfterShow.emit(null);
