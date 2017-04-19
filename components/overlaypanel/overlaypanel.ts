@@ -29,6 +29,11 @@ export class OverlayPanel implements OnInit,AfterViewInit,OnDestroy {
     
     @Input() appendTo: any;
 
+    @Input('position')
+    set position(value: string) {
+        this.domHandler.position = value;
+    }
+
     @Output() onBeforeShow: EventEmitter<any> = new EventEmitter();
 
     @Output() onAfterShow: EventEmitter<any> = new EventEmitter();

@@ -1,9 +1,16 @@
 import { Injectable } from '@angular/core';
 
+class Position {
+    public static LEFT: string = "left";
+    public static RIGHT: string = "right";
+}
+
 @Injectable()
 export class DomHandler {
 
     public static zindex: number = 1000;
+
+    public position: string;
 
     public addClass(element: any, className: string): void {
         if (element.classList)
@@ -90,26 +97,30 @@ export class DomHandler {
 
     public absolutePosition(element: any, target: any): void {
         let elementDimensions = element.offsetParent ? { width: element.offsetWidth, height: element.offsetHeight } : this.getHiddenElementDimensions(element);
-        let elementOuterHeight = elementDimensions.height;
-        let elementOuterWidth = elementDimensions.width;
-        let targetOuterHeight = target.offsetHeight;
-        let targetOuterWidth = target.offsetWidth;
-        let targetOffset = target.getBoundingClientRect();
-        let windowScrollTop = this.getWindowScrollTop();
-        let windowScrollLeft = this.getWindowScrollLeft();
-        let viewport = this.getViewport();
         let top, left;
+        if (this.position === Position.LEFT) {
+            let elementOuterHeight = elementDimensions.height;
+            let elementOuterWidth = elementDimensions.width;
+            let targetOuterHeight = target.offsetHeight;
+            let targetOuterWidth = target.offsetWidth;
+            let targetOffset = target.getBoundingClientRect();
+            let windowScrollTop = this.getWindowScrollTop();
+            let windowScrollLeft = this.getWindowScrollLeft();
+            let viewport = this.getViewport();
 
-        if (targetOffset.top + targetOuterHeight + elementOuterHeight > viewport.height)
-            top = targetOffset.top + windowScrollTop - elementOuterHeight;
-        else
-            top = targetOuterHeight + targetOffset.top + windowScrollTop;
+            if (targetOffset.top + targetOuterHeight + elementOuterHeight > viewport.height)
+                top = targetOffset.top + windowScrollTop - elementOuterHeight;
+            else
+                top = targetOuterHeight + targetOffset.top + windowScrollTop;
 
-        if (targetOffset.left + targetOuterWidth + elementOuterWidth > viewport.width)
-            left = targetOffset.left + windowScrollLeft + targetOuterWidth - elementOuterWidth;
-        else
-            left = targetOffset.left + windowScrollLeft;
-
+            if (targetOffset.left + targetOuterWidth + elementOuterWidth > viewport.width)
+                left = targetOffset.left + windowScrollLeft + targetOuterWidth - elementOuterWidth;
+            else
+                left = targetOffset.left + windowScrollLeft;
+        } else {
+            top = target.offsetTop + target.offsetHeight;
+            left = (target.offsetLeft + target.offsetWidth) - elementDimensions.width;
+        }
         element.style.top = top + 'px';
         element.style.left = left + 'px';
     }
@@ -142,7 +153,10 @@ export class DomHandler {
         dimensions.height = element.offsetHeight;
         element.style.display = 'none';
         element.style.visibility = 'visible';
-
+        /*if (this.position === Position.RIGHT) {
+            element.style.top = '0px';
+            element.style.left = '0px';
+        }*/
         return dimensions;
     }
 
