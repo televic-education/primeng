@@ -7,7 +7,7 @@ import {Header,SharedModule} from '../common/shared';
     selector: 'p-dialog',
     template: `
         <div #container [ngClass]="{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}" [ngStyle]="style" [class]="styleClass"
-            [style.display]="visible ? 'block' : 'none'" [style.width.px]="width" [style.height.px]="height" (mousedown)="moveOnTop()" [@dialogState]="visible ? 'visible' : 'hidden'">
+            [style.display]="visible ? 'flex' : 'none'" [style.width.px]="width" [style.height.px]="height" (mousedown)="moveOnTop()" [@dialogState]="visible ? 'visible' : 'hidden'">
             <div class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"
                 (mousedown)="initDrag($event)" (mouseup)="endDrag($event)" *ngIf="showHeader">
                 <span class="ui-dialog-title" *ngIf="header">{{header}}</span>
@@ -217,7 +217,7 @@ export class Dialog implements AfterViewInit,AfterViewChecked,OnDestroy {
         let elementHeight = this.domHandler.getOuterHeight(this.container);
         if(elementWidth == 0 && elementHeight == 0) {
             this.container.style.visibility = 'hidden';
-            this.container.style.display = 'block';
+            this.container.style.display = 'flex';
             elementWidth = this.domHandler.getOuterWidth(this.container);
             elementHeight = this.domHandler.getOuterHeight(this.container);
             this.container.style.display = 'none';
