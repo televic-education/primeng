@@ -9,7 +9,7 @@ import {Header,Footer,SharedModule} from '../common/shared';
     selector: 'p-dialog',
     template: `
         <div #container [ngClass]="{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}" [ngStyle]="style" [class]="styleClass"
-            [style.display]="visible ? 'block' : 'none'" [style.width.px]="width" [style.height.px]="height" [style.minWidth.px]="minWidth" (mousedown)="moveOnTop()" [@dialogState]="visible ? 'visible' : 'hidden'">
+            [style.display]="visible ? 'flex' : 'none'" [style.width.px]="width" [style.height.px]="height" [style.minWidth.px]="minWidth" (mousedown)="moveOnTop()" [@dialogState]="visible ? 'visible' : 'hidden'">
             <div #titlebar class="ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top"
                 (mousedown)="initDrag($event)" (mouseup)="endDrag($event)" *ngIf="showHeader">
                 <span class="ui-dialog-title" *ngIf="header">{{header}}</span>
@@ -235,7 +235,7 @@ export class Dialog implements AfterViewInit,AfterViewChecked,OnDestroy {
         let elementHeight = this.domHandler.getOuterHeight(this.containerViewChild.nativeElement);
         if(elementWidth == 0 && elementHeight == 0) {
             this.containerViewChild.nativeElement.style.visibility = 'hidden';
-            this.containerViewChild.nativeElement.style.display = 'block';
+            this.containerViewChild.nativeElement.style.display = 'flex';
             elementWidth = this.domHandler.getOuterWidth(this.containerViewChild.nativeElement);
             elementHeight = this.domHandler.getOuterHeight(this.containerViewChild.nativeElement);
             this.containerViewChild.nativeElement.style.display = 'none';
