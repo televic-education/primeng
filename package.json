@@ -1,7 +1,6 @@
 {
-  "name": "primeng",
-  "version": "5.2.1-SNAPSHOT",
-  "license": "MIT",
+  "name": "@televic/primeng",
+  "version": "5.2.1-0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -12,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/primefaces/primeng.git"
+    "url": "ssh://git@bitbucket.televic.com:7999/tlv_angular/primeng.git"
   },
   "devDependencies": {
     "@angular/animations": "^5.0.0",
@@ -63,5 +62,8 @@
     "typescript": "~2.4.2",
     "web-animations-js": "2.3.1",
     "zone.js": "^0.8.14"
+  },
+  "publishConfig" : {
+    "registry" : "https://nexus.televic.com/repository/tlv-angular-npm/"
   }
 }

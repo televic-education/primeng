@@ -160,6 +160,8 @@ export class TabView implements AfterContentInit,BlockableUI {
     @Input() styleClass: string;
     
     @Input() controlClose: boolean;
+    
+    @Input() beforeChange: (previousIndex: number, nextIndex: number) => Promise<boolean>;
         
     @ContentChildren(TabPanel) tabPanels: QueryList<TabPanel>;
 
@@ -215,16 +217,33 @@ export class TabView implements AfterContentInit,BlockableUI {
         
         if(!tab.selected) {
             let selectedTab: TabPanel = this.findSelectedTab();
-            if(selectedTab) {
-                selectedTab.selected = false
+            if(this.beforeChange) {
+                let previousIndex = this.findTabIndex(selectedTab);
+                let nextIndex = this.findTabIndex(tab);
+                this.beforeChange(previousIndex, nextIndex)
+                    .then((result) => {
+                        if(result === true) {
+                            this.changeTab(selectedTab, tab);
+                        }
+                    });
+            } else {
+                this.changeTab(selectedTab, tab);
             }
-            tab.selected = true;
-            this.onChange.emit({originalEvent: event, index: this.findTabIndex(tab)});
         }
         
         if(event) {
             event.preventDefault();
         }
+    }
+
+    changeTab(previousTab: TabPanel, nextTab: TabPanel) {
+        if(previousTab) {
+            previousTab.selected = false
+        }
+        nextTab.selected = true;
+        let previousIndex = this.findTabIndex(previousTab);
+        let nextIndex = this.findTabIndex(nextTab);
+        this.onChange.emit({ originalEvent: event, index: nextIndex, previousIndex });
     }
     
     close(event: Event, tab: TabPanel) {  

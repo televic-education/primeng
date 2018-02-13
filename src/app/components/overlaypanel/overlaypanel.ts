@@ -42,6 +42,8 @@ export class OverlayPanel implements AfterViewInit,AfterViewChecked,OnDestroy {
     
     @Input() appendTo: any;
 
+    @Input() position: string;
+
     @Output() onBeforeShow: EventEmitter<any> = new EventEmitter();
 
     @Output() onAfterShow: EventEmitter<any> = new EventEmitter();
@@ -83,7 +85,7 @@ export class OverlayPanel implements AfterViewInit,AfterViewChecked,OnDestroy {
     
     ngAfterViewChecked() {
         if(this.willShow) {
-            this.domHandler.absolutePosition(this.container, this.target);
+            this.domHandler.absolutePosition(this.container, this.target, this.position);
             this.bindDocumentClickListener();
             this.onAfterShow.emit(null);
             this.willShow = false;

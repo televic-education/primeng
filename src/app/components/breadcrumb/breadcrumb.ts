@@ -6,7 +6,7 @@ import {RouterModule} from '@angular/router';
 
 @Component({
     selector: 'p-breadcrumb',
-    template: `
+    template: ` 
         <div [class]="styleClass" [ngStyle]="style" [ngClass]="'ui-breadcrumb ui-widget ui-widget-header ui-helper-clearfix ui-corner-all'">
             <ul>
                 <li class="ui-breadcrumb-home" *ngIf="home">

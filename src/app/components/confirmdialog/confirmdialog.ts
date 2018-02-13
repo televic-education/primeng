@@ -87,6 +87,10 @@ export class ConfirmDialog implements AfterViewInit,AfterViewChecked,OnDestroy {
     @Input() key: string;
         
     @ContentChild(Footer) footer;
+
+    @Output() onBeforeHide: EventEmitter<any> = new EventEmitter();
+
+    @Output() onAfterHide: EventEmitter<any> = new EventEmitter();
     
     confirmation: Confirmation;
         
@@ -217,7 +221,9 @@ export class ConfirmDialog implements AfterViewInit,AfterViewChecked,OnDestroy {
             this.confirmation.rejectEvent.emit();
         }
         
+        this.onBeforeHide.emit(event);
         this.hide();
+        this.onAfterHide.emit(event);
         event.preventDefault();
     }
     
