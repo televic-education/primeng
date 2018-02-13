@@ -218,11 +218,11 @@ export class TabView implements AfterContentInit,BlockableUI {
                 this.beforeChange(previousIndex, nextIndex)
                     .then((result) => {
                         if(result === true) {
-                            this.changeTab(selectedTab, tab);
+                            this.changeTab(event, selectedTab, tab);
                         }
                     });
             } else {
-                this.changeTab(selectedTab, tab);
+                this.changeTab(event, selectedTab, tab);
             }
         }
         
@@ -231,14 +231,14 @@ export class TabView implements AfterContentInit,BlockableUI {
         }
     }
 
-    changeTab(previousTab: TabPanel, nextTab: TabPanel) {
+    changeTab(originalEvent: Event, previousTab: TabPanel, nextTab: TabPanel) {
         if(previousTab) {
             previousTab.selected = false
         }
         nextTab.selected = true;
         let previousIndex = this.findTabIndex(previousTab);
         let nextIndex = this.findTabIndex(nextTab);
-        this.onChange.emit({ originalEvent: event, index: nextIndex, previousIndex });
+        this.onChange.emit({ originalEvent, index: nextIndex, previousIndex });
     }
     
     close(event: Event, tab: TabPanel) {  
