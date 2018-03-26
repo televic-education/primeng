@@ -63,7 +63,7 @@
     "web-animations-js": "2.3.1",
     "zone.js": "^0.8.14"
   },
-  "publishConfig" : {
-    "registry" : "https://nexus.televic.com/repository/tlv-angular-npm/"
+  "publishConfig": {
+    "registry": "https://nexus.televic.com/repository/tlv-angular-npm/"
   }
 }
