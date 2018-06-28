@@ -41,7 +41,7 @@ export const INPUTMASK_VALUE_ACCESSOR: any = {
     selector: 'p-inputMask',
     template: `<input #input pInputText [attr.id]="inputId" [attr.type]="type" [attr.name]="name" [ngStyle]="style" [ngClass]="styleClass" [attr.placeholder]="placeholder"
         [attr.size]="size" [attr.maxlength]="maxlength" [attr.tabindex]="tabindex" [disabled]="disabled" [readonly]="readonly" [attr.required]="required"
-        (focus)="onInputFocus($event)" (blur)="onInputBlur($event)" (keydown)="onKeyDown($event)" (keypress)="onKeyPress($event)"
+        (focus)="onInputFocus($event)" (blur)="onInputBlur($event)" (keydown)="onKeyDown($event)" (keypress)="onKeyPress($event)" [attr.autofocus]="autoFocus"
         (input)="onInput($event)" (paste)="handleInputChange($event)">`,
     host: {
         '[class.ui-inputwrapper-filled]': 'filled',
@@ -82,6 +82,8 @@ export class InputMask implements OnInit,OnDestroy,ControlValueAccessor {
     @Input() required: boolean;
 
     @Input() characterPattern: string = '[A-Za-z]';
+
+    @Input() autoFocus: boolean;
 
     @ViewChild('input') inputViewChild: ElementRef;
 
@@ -339,31 +341,38 @@ export class InputMask implements OnInit,OnDestroy,ControlValueAccessor {
                while (pos.begin < this.firstNonMaskPos && !this.tests[pos.begin])
                   pos.begin++;
             }
-            this.caret(pos.begin,pos.begin);
+
+            setTimeout(() => {
+                this.caret(pos.begin, pos.begin);
+                this.updateModel(e);
+                if (this.isCompleted()) {
+                    this.onComplete.emit();
+                }
+            }, 0);
         } else {
             this.checkVal(true);
-            const newPos = this.seekNext(pos.begin);
-
-			setTimeout(() => this.caret(newPos, newPos));
+            while (pos.begin < this.len && !this.tests[pos.begin])
+                pos.begin++;
+                
+            setTimeout(() => {
+                this.caret(pos.begin, pos.begin);
+                this.updateModel(e);
+                if (this.isCompleted()) {
+                    this.onComplete.emit();
+                }
+            }, 0);
         }
-
-        setTimeout(() => {
-            this.updateModel(e);
-            if (this.isCompleted()) {
-                this.onComplete.emit();
-            }
-        }, 0);
     }
 
     onInputBlur(e) {
         this.focus = false;
         this.onModelTouched();
         this.checkVal();
-        this.updateModel(e);
         this.updateFilledState();
         this.onBlur.emit(e);
 
         if (this.inputViewChild.nativeElement.value != this.focusText) {
+            this.updateModel(e);
             let event = document.createEvent('HTMLEvents');
             event.initEvent('change', true, false);
             this.inputViewChild.nativeElement.dispatchEvent(event);
@@ -387,7 +396,6 @@ export class InputMask implements OnInit,OnDestroy,ControlValueAccessor {
             pos = this.caret();
             begin = pos.begin;
             end = pos.end;
-
 
             if (end - begin === 0) {
                 begin=k!==46?this.seekPrev(begin):(end=this.seekNext(begin-1));
@@ -422,7 +430,7 @@ export class InputMask implements OnInit,OnDestroy,ControlValueAccessor {
             next,
             completed;
 
-        if (e.ctrlKey || e.altKey || e.metaKey || k < 32) {//Ignore
+        if (e.ctrlKey || e.altKey || e.metaKey || k < 32  || (k > 34 && k < 41)) {//Ignore
             return;
         } else if ( k && k !== 13 ) {
             if (pos.end - pos.begin !== 0){
@@ -597,7 +605,7 @@ export class InputMask implements OnInit,OnDestroy,ControlValueAccessor {
 
     updateModel(e) {
         const updatedValue = this.unmask ? this.getUnmaskedValue() : e.target.value;
-        if(updatedValue) {
+        if(updatedValue !== null || updatedValue !== undefined) {
             this.value = updatedValue;
             this.onModelChange(this.value);
         }
